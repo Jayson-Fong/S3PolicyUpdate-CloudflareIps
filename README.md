@@ -1,6 +1,6 @@
 # S3 Policy Updater for Cloudflare's IP Pool
 
-Easily keeps your AWS S3 Bucket Policy up to date with Cloudflare's latest set of IP addresses. It is expected that the policy is set to the one as shown in [Configuring an Amazon Web Services static site to use Cloudflare](https://support.cloudflare.com/hc/en-us/articles/360037983412-Configuring-an-Amazon-Web-Services-static-site-to-use-Cloudflare), else, you may need to adjust the statement index on line 44.
+Easily keeps your AWS S3 Bucket Policy up to date with Cloudflare's latest set of IP addresses. It is expected that the policy is set to the one as shown in [Configuring an Amazon Web Services static site to use Cloudflare](https://support.cloudflare.com/hc/en-us/articles/360037983412-Configuring-an-Amazon-Web-Services-static-site-to-use-Cloudflare), else, you may need to adjust the statement index on line 45.
 
 Designed for running with [AWS Lambda](https://aws.amazon.com/lambda/) using Python 3.8.
 
