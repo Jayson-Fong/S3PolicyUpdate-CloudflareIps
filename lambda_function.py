@@ -27,23 +27,25 @@ import boto3
 import os
 import urllib.request
 
-def update():
-    s3_client = boto3.client('s3', os.environ['Region'])
-    bucket_policy = s3_client.get_bucket_policy(Bucket=os.environ['Bucket'])
-    bucket_policy_dict = json.loads(bucket_policy['Policy'])
 
+def update():
     ips = []
     with urllib.request.urlopen("https://api.cloudflare.com/client/v4/ips") as url:
         data = json.loads(url.read().decode())
-        
+
         for ip4 in data['result']['ipv4_cidrs']:
             ips.append(ip4)
-        
+
         for ip6 in data['result']['ipv6_cidrs']:
             ips.append(ip6)
-    
-    bucket_policy_dict['Statement'][0]['Condition']['IpAddress']['aws:SourceIp'] = ips
-    s3_client.put_bucket_policy(Bucket=os.environ['Bucket'], Policy=json.dumps(bucket_policy_dict))
+
+    s3_client = boto3.client('s3', os.environ['Region'])
+    for bucket in os.environ['Buckets'].split(','):
+        bucket_policy = s3_client.get_bucket_policy(Bucket=bucket)
+        bucket_policy_dict = json.loads(bucket_policy['Policy'])
+        bucket_policy_dict['Statement'][0]['Condition']['IpAddress']['aws:SourceIp'] = ips
+        s3_client.put_bucket_policy(Bucket=bucket, Policy=json.dumps(bucket_policy_dict))
+
 
 def lambda_handler(event, context):
     update()
